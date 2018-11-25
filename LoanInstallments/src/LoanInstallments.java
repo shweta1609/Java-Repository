@@ -4,14 +4,14 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.regex.Pattern;
 
-public class Main {
+public class LoanInstallments {
 
     private static float principle;
     private static float years;
     private static float rate;
     private static float downpayment;
 
-    public Main(){
+    public LoanInstallments(){
         principle = 0;
         years = 0;
         rate = 0;
@@ -24,13 +24,21 @@ public class Main {
         String line;
         while ((line = in.readLine()) != null) {
             String[] input = line.split(Pattern.quote("~"));
-            principle = Float.parseFloat(input[0]);
-            years = Float.parseFloat(input[1]);
-            rate = Float.parseFloat(input[2]);
-            downpayment = Float.parseFloat(input[3]);
-            double payment = calculatePayments();
-            int interest = calculateInterest(payment);
-            System.out.println("$" + String.format( "%.2f", payment ) + "~$" + interest );
+            try{
+                principle = Float.parseFloat(input[0]);
+                years = Float.parseFloat(input[1]);
+                rate = Float.parseFloat(input[2]);
+                downpayment = Float.parseFloat(input[3]);
+                if(downpayment > principle){
+                    throw new Exception("Downpayment cannot be greater than principle amount");
+                }
+                double payment = calculatePayments();
+                int interest = calculateInterest(payment);
+                System.out.println("$" + String.format( "%.2f", payment ) + "~$" + interest );
+            }
+            catch(Exception exp){
+                System.out.println(exp);
+            }
 
         }
     }
